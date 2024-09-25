@@ -26,16 +26,12 @@ class AppFixtures extends Fixture
                 
         }
 
-
-
-
-
+        
 
         public function load(ObjectManager $manager)
         {
                 $tvshowRepo = $manager->getRepository(TvShow::class);
-
-
+                $catalog = new OnlineCatalog();
 
                 foreach (self::tvshowDataGenerator() as [$title, $year, $director, $note] ) {
                         $tvshow = new TvShow();
@@ -46,7 +42,6 @@ class AppFixtures extends Fixture
                         $manager->persist($tvshow);
                         
                         
-                        $catalog = new OnlineCatalog();
                         $catalog->addTvshow($tvshow);
                         $manager->persist($catalog);
 

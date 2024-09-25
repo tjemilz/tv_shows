@@ -16,6 +16,19 @@ class TvShowRepository extends ServiceEntityRepository
         parent::__construct($registry, TvShow::class);
     }
 
+
+    public function findAll(): array
+    {
+        //  findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+        return $this->findBy(
+                []
+        );
+    }
+
+
+
+
+
     //    /**
     //     * @return TvShow[] Returns an array of TvShow objects
     //     */
