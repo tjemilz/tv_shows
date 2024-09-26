@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class OnlineCatalogController extends AbstractController
 {
-    #[Route('/onlinecatalog', name: 'app_online_catalog', methods:['GET'])]
+    #[Route('/onlinecatalog', name: 'app_online_catalog')]
     public function index(ManagerRegistry $doctrine): Response
     {
         $res = '<!DOCTYPE html>
@@ -32,9 +32,25 @@ class OnlineCatalogController extends AbstractController
         foreach($catalogs as $catalog) {
 
             $res .= '<li>
-            <a href="">'. "Catalogue numéro ". $count .'</a></li>';
-            $count = $count + 1;
+            Catalogue numéro '. $count .'</li><ul>';
+            
 
+            $tvshows = $entityManager->getRepository(TvShow::class)->findAll();
+            foreach($tvshows as $tvshow){
+                dump($tvshow->getId());
+                $url = $this->generateUrl(
+                    "onlinecatalog_show", 
+                    ['id' => $tvshow->getId()]);
+                $res .= '<li>
+                <a href="' .$url.'">'. "Tv Show n° ". $tvshow->getId() . '</a></li>';
+            
+            }
+
+
+            $res .= '</ul>';
+            $count = $count + 1;
+                
+        
         }
         $res .= '</ul>';
         $res .= '</body></html>';
@@ -74,7 +90,7 @@ class OnlineCatalogController extends AbstractController
             $res .= '</ul>';
             
 
-            $res .= '<p/><a href="">Back</a>';
+            $res .= '<p/><a href="' . $this->generateUrl('app_online_catalog') . '">Back</a>';
 
             return new Response('<html><body>'. $res . '</body></html>');
     }
