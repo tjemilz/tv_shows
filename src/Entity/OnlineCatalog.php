@@ -19,11 +19,11 @@ class OnlineCatalog
      * @var Collection<int, TvShow>
      */
     #[ORM\OneToMany(targetEntity: TvShow::class, mappedBy: 'onlineCatalog', orphanRemoval: true)]
-    private Collection $tvshow;
+    private Collection $tvshows;
 
     public function __construct()
     {
-        $this->tvshow = new ArrayCollection();
+        $this->tvshows = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -36,25 +36,25 @@ class OnlineCatalog
      */
     public function getTvshow(): Collection
     {
-        return $this->tvshow;
+        return $this->tvshows;
     }
 
-    public function addTvshow(TvShow $tvshow): static
+    public function addTvshow(TvShow $tvshows): static
     {
-        if (!$this->tvshow->contains($tvshow)) {
-            $this->tvshow->add($tvshow);
-            $tvshow->setOnlineCatalog($this);
+        if (!$this->tvshows->contains($tvshows)) {
+            $this->tvshows->add($tvshows);
+            $tvshows->setOnlineCatalog($this);
         }
 
         return $this;
     }
 
-    public function removeTvshow(TvShow $tvshow): static
+    public function removeTvshow(TvShow $tvshows): static
     {
-        if ($this->tvshow->removeElement($tvshow)) {
+        if ($this->tvshows->removeElement($tvshows)) {
             // set the owning side to null (unless already changed)
-            if ($tvshow->getOnlineCatalog() === $this) {
-                $tvshow->setOnlineCatalog(null);
+            if ($tvshows->getOnlineCatalog() === $this) {
+                $tvshows->setOnlineCatalog(null);
             }
         }
 

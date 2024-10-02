@@ -40,12 +40,23 @@ class AppFixtures extends Fixture
                         $tvshow->setDirector($director);
                         $tvshow->setNote($note);
                         $manager->persist($tvshow);
-                        
-                        
                         $catalog->addTvshow($tvshow);
                         $manager->persist($catalog);
 
                 }
+
+                $catalog2= new OnlineCatalog();
+                $tvshow = new TvShow();
+
+                
+                $tvshow->setName("Dark");
+                $tvshow->setYear(2017);
+                $tvshow->setDirector("Baran bo Odar, Jantje Friese");
+                $tvshow->setNote(16);
+                
+                $manager->persist($tvshow);
+                $catalog2->addTvshow($tvshow);
+                $manager->persist($catalog2);
                 $manager->flush();
 
 

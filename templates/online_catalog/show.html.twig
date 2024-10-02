@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}Online Catalog n° {{onlinecatalog.id }}{% endblock %}
+
+{% block body %}
+    <h1>Online Catalog n° {{onlinecatalog.id }}</h1>
+
+       
+
+{% for tvshows in onlinecatalog.getTvshow %}
+
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Tv Show n°: </th>
+                <td>{{ tvshows.id }}</td>
+                <td><a href="{{ path('tvshow_display', {'id': tvshows.id}) }}">show</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+{% endfor %}
+<a href="{{ path('app_online_catalog') }}">back to list of catalogs</a> 
+{% endblock %} {# body #} 
