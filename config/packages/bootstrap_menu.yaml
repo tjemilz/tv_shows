@@ -1,0 +1,7 @@
+bootstrap_menu:
+  menus:
+    main:
+      items:
+        onlinecatalogs:
+          label: 'Online catalogs'
+          route: 'app_online_catalog'
