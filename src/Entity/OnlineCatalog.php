@@ -24,7 +24,6 @@ class OnlineCatalog
     #[ORM\Column(length: 255)]
     private ?string $owner = null;
 
-
     public function __construct()
     {
         $this->tvshows = new ArrayCollection();
@@ -64,7 +63,6 @@ class OnlineCatalog
 
         return $this;
     }
-
 
 
     public function getOwner(): ?string
