@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New BestOnes{% endblock %}
+
+{% block body %}
+    <h1>Create new BestOnes</h1>
+
+    {{ include('best_ones/_form.html.twig') }}
+
+    <a href="{{ path('app_best_ones_index') }}">back to list</a>
+{% endblock %}

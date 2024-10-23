@@ -21,6 +21,10 @@ class OnlineCatalog
     #[ORM\OneToMany(targetEntity: TvShow::class, mappedBy: 'onlineCatalog', orphanRemoval: true)]
     private Collection $tvshows;
 
+    #[ORM\Column(length: 255)]
+    private ?string $owner = null;
+
+
     public function __construct()
     {
         $this->tvshows = new ArrayCollection();
@@ -57,6 +61,20 @@ class OnlineCatalog
                 $tvshows->setOnlineCatalog(null);
             }
         }
+
+        return $this;
+    }
+
+
+
+    public function getOwner(): ?string
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(string $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }

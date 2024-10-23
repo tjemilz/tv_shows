@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TvShowRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TvShowRepository::class)]
@@ -28,6 +30,17 @@ class TvShow
 
     #[ORM\Column]
     private ?int $note = null;
+
+    /**
+     * @var Collection<int, BestOnes>
+     */
+    #[ORM\ManyToMany(targetEntity: BestOnes::class, mappedBy: 'tvshows')]
+    private Collection $bestOnes;
+
+    public function __construct()
+    {
+        $this->bestOnes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,6 +103,33 @@ class TvShow
     public function setNote(int $note): static
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BestOnes>
+     */
+    public function getBestOnes(): Collection
+    {
+        return $this->bestOnes;
+    }
+
+    public function addBestOne(BestOnes $bestOne): static
+    {
+        if (!$this->bestOnes->contains($bestOne)) {
+            $this->bestOnes->add($bestOne);
+            $bestOne->addTvshow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBestOne(BestOnes $bestOne): static
+    {
+        if ($this->bestOnes->removeElement($bestOne)) {
+            $bestOne->removeTvshow($this);
+        }
 
         return $this;
     }

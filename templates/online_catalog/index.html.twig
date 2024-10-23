@@ -10,7 +10,8 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Online Catalog n°: </th>
+                <th>Online Catalog: </th>
+                <td>{{ onlinecatalog.owner }}</td>
                 <td>{{ onlinecatalog.id }}</td>
                 <td><a href="{{ path('onlinecatalog_show', {'id': onlinecatalog.id}) }}">show</a></td>
             </tr>
