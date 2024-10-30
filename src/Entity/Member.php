@@ -39,6 +39,9 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: BestOnes::class, mappedBy: 'creator')]
     private Collection $bestOnes;
 
+    #[ORM\OneToOne(inversedBy: 'member', cascade: ['persist', 'remove'])]
+    private ?OnlineCatalog $catalog = null;
+
     public function __construct()
     {
         $this->bestOnes = new ArrayCollection();
@@ -146,6 +149,25 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
                 $bestOne->setCreator(null);
             }
         }
+
+        return $this;
+    }
+
+    public function __toString() 
+    {
+        $s = '';
+        $s .=  $this->getEmail() .' ';
+        return $s;
+    }
+
+    public function getCatalog(): ?OnlineCatalog
+    {
+        return $this->catalog;
+    }
+
+    public function setCatalog(?OnlineCatalog $catalog): static
+    {
+        $this->catalog = $catalog;
 
         return $this;
     }

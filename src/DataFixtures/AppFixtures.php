@@ -9,6 +9,7 @@ use App\Entity\TvShow;
 use App\Entity\Member;
 use App\Repository\OnlineCatalogRepository;
 use App\Repository\TvShowRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
@@ -59,8 +60,6 @@ class AppFixtures extends Fixture
         {
                 $tvshowRepo = $manager->getRepository(TvShow::class);
                 $catalog = new OnlineCatalog();
-                
-                $catalog->setOwner("Emilien");
 
                 foreach (self::tvshowDataGenerator() as [$title, $year, $director, $note] ) {
                         $tvshow = new TvShow();
@@ -70,12 +69,10 @@ class AppFixtures extends Fixture
                         $tvshow->setNote($note);
                         $manager->persist($tvshow);
                         $catalog->addTvshow($tvshow);
-                        $manager->persist($catalog);
 
                 }
 
                 $catalog2= new OnlineCatalog();
-                $catalog2->setOwner("Maxence");
                 $tvshow = new TvShow();
 
                 
@@ -86,8 +83,8 @@ class AppFixtures extends Fixture
                 
                 $manager->persist($tvshow);
                 $catalog2->addTvshow($tvshow);
-                $manager->persist($catalog2);
-                $manager->flush();
+                
+               
 
 
 
@@ -102,10 +99,19 @@ class AppFixtures extends Fixture
                         // $user->setRoles($roles);
             
                         $manager->persist($user);
-                    }
-
-
-
+                }
+                
+                $catalog->setMember($user);
+                $catalog2->setMember($user);
+                
+                
+                
+                
+                $manager->persist($catalog);
+                $manager->persist($catalog2);
+                
+                
+                $manager->flush();
 
         }
 

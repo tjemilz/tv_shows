@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block title %}Tv Show Display{% endblock %}
+
+{% block body %}
+    <h1>Tv Show Details</h1>
+
+
+<table class="table">
+    <tbody>
+        <tr>
+                <th>Id</th>
+                <td>{{ tvshow.id }}</td>
+            </tr>
+            <tr>
+                <th>Name of the Tv Show</th>
+                <td>{{ tvshow.getName }}</td>
+            </tr>
+            <tr>
+                <th>First episode release</th>
+                <td>{{tvshow.getYear }}</td>
+            </tr>
+            <tr>
+                <th>Director</th>
+                <td>{{tvshow.getDirector}}</td>
+            </tr>
+            <tr>
+                <th>Note</th>
+                <td>{{tvshow.getNote}}</td>
+            </tr>
+
+
+    </tbody>
+</table>
+
+<a href="{{ path('app_best_ones_index') }}">back to bestones </a>
+{% endblock %} {# body #} 

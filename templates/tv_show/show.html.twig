@@ -1,36 +1,38 @@
 {% extends 'base.html.twig' %}
-{% block title %}Tv Show Display{% endblock %}
+
+{% block title %}TvShow{% endblock %}
 
 {% block body %}
-    <h1>Tv Show Details</h1>
+    <h1>TvShow</h1>
 
-
-<table class="table">
-    <tbody>
-        <tr>
+    <table class="table">
+        <tbody>
+            <tr>
                 <th>Id</th>
-                <td>{{ tvshow.id }}</td>
+                <td>{{ tv_show.id }}</td>
             </tr>
             <tr>
-                <th>Name of the Tv Show</th>
-                <td>{{ tvshow.getName }}</td>
+                <th>Name</th>
+                <td>{{ tv_show.name }}</td>
             </tr>
             <tr>
-                <th>First episode release</th>
-                <td>{{tvshow.getYear }}</td>
+                <th>Year</th>
+                <td>{{ tv_show.year }}</td>
             </tr>
             <tr>
                 <th>Director</th>
-                <td>{{tvshow.getDirector}}</td>
+                <td>{{ tv_show.director }}</td>
             </tr>
             <tr>
                 <th>Note</th>
-                <td>{{tvshow.getNote}}</td>
+                <td>{{ tv_show.note }}</td>
             </tr>
+        </tbody>
+    </table>
 
+    <a href="{{ path('app_tv_show_index') }}">back to list</a>
 
-    </tbody>
-</table>
+    <a href="{{ path('app_tv_show_edit', {'id': tv_show.id}) }}">edit</a>
 
-<a href="{{ path('onlinecatalog_show', {'id': tvshow.onlinecatalog.id}) }}">back to online catalog {{tvshow.onlinecatalog.id}}</a>
-{% endblock %} {# body #} 
+    {{ include('tv_show/_delete_form.html.twig') }}
+{% endblock %}

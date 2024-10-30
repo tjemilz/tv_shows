@@ -100,4 +100,11 @@ class BestOnes
 
         return $this;
     }
+
+    public function __toString() 
+    {
+        $s = '';
+        $s .= $this->getId() .' ';
+        return $s;
+    }
 }

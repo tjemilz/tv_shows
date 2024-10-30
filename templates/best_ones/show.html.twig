@@ -20,12 +20,22 @@
                 <td>{{ best_one.published ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
+                <th>Creator</th>
+                <td>{{ best_one.Creator}}</td>
+            </tr>
+            
+            <tr>
                 <th>TvShows</th>
                 <td>
                     <ul>
-                    {% for tvshow in best_one.onlinecatalog %}
+                    {% for tvshow in best_one.tvshows %}
                     <li>
-                        {{ tvshow }}
+                        <a href="{{ path( 'app_bestones_tvshow_show',
+                       {
+                         'bestones_id': best_one.id,
+                         'tvshow_id' : tvshow.id
+                       }
+                     ) }}">{{ tvshow }}</a>
                     </li>
                     {% endfor %}
                     </ul>

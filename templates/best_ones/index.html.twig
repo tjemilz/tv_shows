@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Description</th>
                 <th>Published</th>
+                <th>Creator</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td>{{ best_one.id }}</td>
                 <td>{{ best_one.description }}</td>
                 <td>{{ best_one.published ? 'Yes' : 'No' }}</td>
+                <td>{{ best_one.creator }}</td>
                 <td>
                     <a href="{{ path('app_best_ones_show', {'id': best_one.id}) }}">show</a>
                     <a href="{{ path('app_best_ones_edit', {'id': best_one.id}) }}">edit</a>

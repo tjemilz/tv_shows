@@ -21,8 +21,10 @@ class OnlineCatalog
     #[ORM\OneToMany(targetEntity: TvShow::class, mappedBy: 'onlineCatalog', orphanRemoval: true)]
     private Collection $tvshows;
 
-    #[ORM\Column(length: 255)]
-    private ?string $owner = null;
+
+
+    #[ORM\OneToOne(mappedBy: 'catalog', cascade: ['persist', 'remove'])]
+    private ?Member $member = null;
 
     public function __construct()
     {
@@ -65,14 +67,25 @@ class OnlineCatalog
     }
 
 
-    public function getOwner(): ?string
+
+    public function getMember(): ?Member
     {
-        return $this->owner;
+        return $this->member;
     }
 
-    public function setOwner(string $owner): static
+    public function setMember(?Member $member): static
     {
-        $this->owner = $owner;
+        // unset the owning side of the relation if necessary
+        if ($member === null && $this->member !== null) {
+            $this->member->setCatalog(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($member !== null && $member->getCatalog() !== $this) {
+            $member->setCatalog($this);
+        }
+
+        $this->member = $member;
 
         return $this;
     }

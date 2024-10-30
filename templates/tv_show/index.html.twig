@@ -1,20 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TvShowController!{% endblock %}
+{% block title %}TvShow index{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>TvShow index</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Year</th>
+                <th>Director</th>
+                <th>Note</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tv_show in tv_shows %}
+            <tr>
+                <td>{{ tv_show.id }}</td>
+                <td>{{ tv_show.name }}</td>
+                <td>{{ tv_show.year }}</td>
+                <td>{{ tv_show.director }}</td>
+                <td>{{ tv_show.note }}</td>
+                <td>
+                    <a href="{{ path('app_tv_show_show', {'id': tv_show.id}) }}">show</a>
+                    <a href="{{ path('app_tv_show_edit', {'id': tv_show.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/emilien/Documents/Cours/CSC4101/Projet/tvshows/src/Controller/TvShowController.php</code></li>
-        <li>Your template at <code>/home/emilien/Documents/Cours/CSC4101/Projet/tvshows/templates/tv_show/index.html.twig</code></li>
-    </ul>
-</div>
+    <a href="{{ path('app_tv_show_new') }}">Create new</a>
 {% endblock %}

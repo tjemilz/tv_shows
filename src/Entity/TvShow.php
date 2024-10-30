@@ -133,4 +133,11 @@ class TvShow
 
         return $this;
     }
+
+    public function __toString() 
+    {
+        $s = '';
+        $s .=  $this->getName() .' ';
+        return $s;
+    }
 }

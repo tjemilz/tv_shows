@@ -5,19 +5,24 @@
     <h1>Online Catalog</h1>
 
 
-{% for onlinecatalog in online_catalogs %}
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Online Catalog: </th>
-                <td>{{ onlinecatalog.owner }}</td>
+                <th>Id</th>
+                <th>Owner</th>
+                <th>Link</th>
+            </tr>
+            </thead>
+            {% for onlinecatalog in online_catalogs %}
+            <tr>
                 <td>{{ onlinecatalog.id }}</td>
+                <td>{{ onlinecatalog.member }}</td>
                 <td><a href="{{ path('onlinecatalog_show', {'id': onlinecatalog.id}) }}">show</a></td>
             </tr>
-
+        {% endfor %}
         </tbody>
     </table>
 
-{% endfor %}
+
 {% endblock %} {# body #} 

@@ -4,22 +4,27 @@
 {% block body %}
     <h1>Online Catalog n° {{onlinecatalog.id }}</h1>
 
-       
-
-{% for tvshows in onlinecatalog.getTvshow %}
-
 
     <table class="table">
         <tbody>
+            <thead>
             <tr>
-                <th>Tv Show n°: </th>
-                <td>{{ tvshows.id }}</td>
-                <td><a href="{{ path('tvshow_display', {'id': tvshows.id}) }}">show</a></td>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Link</th>
             </tr>
+            </thead>
+            {% for tvshows in onlinecatalog.getTvshow %}
 
+            <tr>
+                <td>{{ tvshows.id }}</td>
+                <td>{{ tvshows.name }}</td>
+                <td><a href="{{ path('app_tv_show_show', {'id': tvshows.id}) }}">show</a></td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 
-{% endfor %}
-<a href="{{ path('app_online_catalog') }}">back to list of catalogs</a> 
+
+<a href="{{ path('app_online_catalog') }}" class="btn btn-primary">back to list of catalogs</a>
 {% endblock %} {# body #} 

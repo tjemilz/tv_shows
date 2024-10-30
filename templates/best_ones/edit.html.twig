@@ -7,7 +7,7 @@
 
     {{ include('best_ones/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_best_ones_index') }}">back to list</a>
+    <a class="btn btn-primary" href="{{ path('app_best_ones_index') }}">back to list</a>
 
     {{ include('best_ones/_delete_form.html.twig') }}
 {% endblock %}
