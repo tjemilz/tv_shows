@@ -58,8 +58,9 @@ class AppFixtures extends Fixture
 
         public function load(ObjectManager $manager)
         {
-                $tvshowRepo = $manager->getRepository(TvShow::class);
+  
                 $catalog = new OnlineCatalog();
+
 
                 foreach (self::tvshowDataGenerator() as [$title, $year, $director, $note] ) {
                         $tvshow = new TvShow();
@@ -72,46 +73,48 @@ class AppFixtures extends Fixture
 
                 }
 
-                $catalog2= new OnlineCatalog();
-                $tvshow = new TvShow();
 
-                
+
+                $tvshow = new TvShow();
                 $tvshow->setName("Dark");
                 $tvshow->setYear(2017);
                 $tvshow->setDirector("Baran bo Odar, Jantje Friese");
                 $tvshow->setNote(16);
-                
                 $manager->persist($tvshow);
+
+                $catalog2= new OnlineCatalog();
                 $catalog2->addTvshow($tvshow);
-                
-               
 
 
-
+                // Création des membres (utilisateurs) via un générateur
                 foreach ($this->membersGenerator() as [$email, $plainPassword]) {
                         $user = new Member();
                         $password = $this->hasher->hashPassword($user, $plainPassword);
                         $user->setEmail($email);
                         $user->setPassword($password);
-            
-                        // $roles = array();
-                        // $roles[] = $role;
-                        // $user->setRoles($roles);
-            
+                        
                         $manager->persist($user);
                 }
-                
-                $catalog->setMember($user);
-                $catalog2->setMember($user);
-                
-                
-                
-                
+
+                // Enregistrement initial de tous les objets créés avant de les charger
                 $manager->persist($catalog);
                 $manager->persist($catalog2);
-                
-                
+                $manager->flush(); // Sauvegarde initiale
+
+                // Récupération des membres enregistrés par leur e-mail
+                $MemberRepo = $manager->getRepository(Member::class);
+                $user1 = $MemberRepo->findOneBy(['email' => 'emilien@localhost']);
+                $user2 = $MemberRepo->findOneBy(['email' => 'maxence@localhost']);
+
+                // Attribution des membres aux catalogues
+                $catalog->setMember($user1);
+                $catalog2->setMember($user2);
+
+                // Finalisation de l'enregistrement
                 $manager->flush();
+
+                dump($catalog, $catalog2);
+
 
         }
 

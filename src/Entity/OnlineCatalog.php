@@ -18,7 +18,7 @@ class OnlineCatalog
     /**
      * @var Collection<int, TvShow>
      */
-    #[ORM\OneToMany(targetEntity: TvShow::class, mappedBy: 'onlineCatalog', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: TvShow::class, mappedBy: 'onlineCatalog', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $tvshows;
 
 

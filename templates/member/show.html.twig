@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Member{% endblock %}
+
+{% block body %}
+    <h1>Member</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ member.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ member.email }}</td>
+            </tr>
+            <tr>
+                <th>Online Catalog</th>
+                <td><a href="{{ path('onlinecatalog_show', {'id' : member.catalog.id}) }}"> My Online Catalog </a></td>
+            </tr>
+
+
+                        
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_member') }}">back to list</a>
+
+{% endblock %}

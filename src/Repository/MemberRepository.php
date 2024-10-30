@@ -56,5 +56,5 @@ class MemberRepository extends ServiceEntityRepository implements PasswordUpgrad
     //            ->getQuery()
     //            ->getOneOrNullResult()
     //        ;
-    //    }
+    //   }
 }

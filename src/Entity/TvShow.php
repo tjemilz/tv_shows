@@ -15,7 +15,7 @@ class TvShow
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tvshow')]
+    #[ORM\ManyToOne(inversedBy: 'tvshow', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?OnlineCatalog $onlineCatalog = null;
 
