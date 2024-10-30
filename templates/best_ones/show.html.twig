@@ -45,7 +45,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_best_ones_index') }}">back to list</a>
+    <a href="{{ path('app_member_show', {'id': best_one.Creator.id}) }}">back to list</a>
 
     <a href="{{ path('app_best_ones_edit', {'id': best_one.id}) }}">edit</a>
 

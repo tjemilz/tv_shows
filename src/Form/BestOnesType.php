@@ -14,7 +14,8 @@ class BestOnesType extends AbstractType
         $builder
             ->add('description')
             ->add('published')
-            ->add('creator')
+            ->add('creator', null, [
+                'disabled' => true,])
             ->add('tvshows')
         ;
     }

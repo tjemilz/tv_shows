@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\BestOnes;
+use App\Entity\Member;
 use App\Form\BestOnesType;
 use App\Repository\BestOnesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,14 +24,16 @@ final class BestOnesController extends AbstractController
     public function index(BestOnesRepository $bestOnesRepository): Response
     {
         return $this->render('best_ones/index.html.twig', [
-            'best_ones' => $bestOnesRepository->findAll(),
+            'best_ones' => $bestOnesRepository->findBy(['published' => true]),
         ]);
     }
 
-    #[Route('/new', name: 'app_best_ones_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id}', name: 'app_best_ones_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, Member $member): Response
     {
         $bestOne = new BestOnes();
+        $bestOne->setCreator($member);
+
         $form = $this->createForm(BestOnesType::class, $bestOne);
         $form->handleRequest($request);
 
@@ -38,7 +41,7 @@ final class BestOnesController extends AbstractController
             $entityManager->persist($bestOne);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_best_ones_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_member_show', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('best_ones/new.html.twig', [
@@ -86,7 +89,7 @@ final class BestOnesController extends AbstractController
             $entityManager->persist($bestOne);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_best_ones_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_member_show', ['id' => $bestOne->getCreator()->getId() ], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('best_ones/edit.html.twig', [
@@ -103,7 +106,7 @@ final class BestOnesController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_best_ones_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_member_show', ['id' => $bestOne->getCreator()->getId() ],Response::HTTP_SEE_OTHER);
     }
 
 

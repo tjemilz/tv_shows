@@ -19,6 +19,14 @@
                 <th>Online Catalog</th>
                 <td><a href="{{ path('onlinecatalog_show', {'id' : member.catalog.id}) }}"> My Online Catalog </a></td>
             </tr>
+            <tr>
+                <th>Best Ones</th>
+                {% for bestone in member.bestones %}
+                <td><a href="{{ path('app_best_ones_show', {'id' : bestone.id}) }}"> {{bestone.description}} </a></td>
+                {% endfor %}
+                <td><a href="{{ path('app_best_ones_new', {'id' : member.id}) }}">Create new</a></td>
+            </tr>
+               
 
 
                         
