@@ -18,7 +18,7 @@ class OnlineCatalog
     /**
      * @var Collection<int, TvShow>
      */
-    #[ORM\OneToMany(targetEntity: TvShow::class, mappedBy: 'onlineCatalog', orphanRemoval: true, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: TvShow::class, mappedBy: 'onlineCatalog',  cascade: ['persist'])]
     private Collection $tvshows;
 
 
@@ -89,4 +89,12 @@ class OnlineCatalog
 
         return $this;
     }
+
+    public function __toString() 
+    {
+        $s = '';
+        $s .=  $this->getId() .' ';
+        return $s;
+    }
+
 }

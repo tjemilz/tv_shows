@@ -5,3 +5,6 @@ bootstrap_menu:
         onlinecatalogs:
           label: 'Online catalogs'
           route: 'app_online_catalog'
+        members:
+          label: 'Members'
+          route: 'app_member'

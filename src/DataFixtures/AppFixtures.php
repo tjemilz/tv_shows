@@ -113,8 +113,6 @@ class AppFixtures extends Fixture
                 // Finalisation de l'enregistrement
                 $manager->flush();
 
-                dump($catalog, $catalog2);
-
 
         }
 

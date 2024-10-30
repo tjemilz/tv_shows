@@ -19,15 +19,8 @@ class TvShowType extends AbstractType
             ->add('year')
             ->add('director')
             ->add('note')
-            ->add('onlineCatalog', EntityType::class, [
-                'class' => OnlineCatalog::class,
-                'choice_label' => 'id',
-            ])
-            ->add('bestOnes', EntityType::class, [
-                'class' => BestOnes::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
+            ->add('onlineCatalog', null, [
+                'disabled' => true,])
         ;
     }
 

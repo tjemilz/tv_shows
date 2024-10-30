@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\OnlineCatalog;
 use App\Entity\TvShow;
 use App\Form\TvShowType;
 use App\Repository\TvShowRepository;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/tv/show')]
+#[Route('/tvshow')]
 final class TvShowController extends AbstractController
 {
     #[Route(name: 'app_tv_show_index', methods: ['GET'])]
@@ -22,10 +23,12 @@ final class TvShowController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_tv_show_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id}', name: 'app_tv_show_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, OnlineCatalog $onlineCatalog): Response
     {
         $tvShow = new TvShow();
+        $tvShow->setOnlineCatalog($onlineCatalog);
+
         $form = $this->createForm(TvShowType::class, $tvShow);
         $form->handleRequest($request);
 
@@ -33,7 +36,7 @@ final class TvShowController extends AbstractController
             $entityManager->persist($tvShow);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_tv_show_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_online_catalog', ['id' => $onlineCatalog->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('tv_show/new.html.twig', [
@@ -59,7 +62,7 @@ final class TvShowController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_tv_show_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('onlinecatalog_show', ['id' => $tvShow->getOnlineCatalog()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('tv_show/edit.html.twig', [
@@ -71,11 +74,15 @@ final class TvShowController extends AbstractController
     #[Route('/{id}', name: 'app_tv_show_delete', methods: ['POST'])]
     public function delete(Request $request, TvShow $tvShow, EntityManagerInterface $entityManager): Response
     {
+        $catalog = $tvShow->getOnlineCatalog();
         if ($this->isCsrfTokenValid('delete'.$tvShow->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($tvShow);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_tv_show_index', [], Response::HTTP_SEE_OTHER);
+        $catalog = $tvShow->getOnlineCatalog();
+        if ($catalog) {
+            return $this->redirectToRoute('onlinecatalog_show', ['id' => $catalog->getId()], Response::HTTP_SEE_OTHER);
+        }
     }
 }
