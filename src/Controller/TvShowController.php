@@ -18,6 +18,14 @@ final class TvShowController extends AbstractController
     #[Route(name: 'app_tv_show_index', methods: ['GET'])]
     public function index(TvShowRepository $tvShowRepository): Response
     {
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $tvshows = $tvShowRepository->findAll();
+        }
+        else {
+            $member = $this->getUser();
+            dump($this);
+            $tvshows = $tvShowRepository->findMemberTvShow($member);
+        }
         return $this->render('tv_show/index.html.twig', [
             'tv_shows' => $tvShowRepository->findAll(),
         ]);
@@ -33,6 +41,7 @@ final class TvShowController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imagefile = $tvShow->getImageFile();
             $entityManager->persist($tvShow);
             $entityManager->flush();
 

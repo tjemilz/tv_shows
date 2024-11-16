@@ -11,11 +11,11 @@ use App\Repository\OnlineCatalogRepository;
 use App\Repository\TvShowRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 
 
-
-class AppFixtures extends Fixture
+class AppFixtures extends Fixture 
 {
         /**
          * Creates a function to hash passwords
@@ -50,8 +50,8 @@ class AppFixtures extends Fixture
          */
         private function membersGenerator()
         {
-                yield ['emilien@localhost','123456'];
-                yield ['maxence@localhost','123456'];
+                yield ['emilien@localhost','123456','ROLE_ADMIN'];
+                yield ['maxence@localhost','123456','ROLE_USER'];
         }
 
         
@@ -87,12 +87,14 @@ class AppFixtures extends Fixture
 
 
                 // Création des membres (utilisateurs) via un générateur
-                foreach ($this->membersGenerator() as [$email, $plainPassword]) {
+                foreach ($this->membersGenerator() as [$email, $plainPassword,$role]) {
                         $user = new Member();
                         $password = $this->hasher->hashPassword($user, $plainPassword);
                         $user->setEmail($email);
                         $user->setPassword($password);
-                        
+                        $roles = array();
+                        $roles[] = $role;
+                        $user->setRoles($roles);
                         $manager->persist($user);
                 }
 

@@ -27,12 +27,16 @@
                 <th>Note</th>
                 <td>{{ tv_show.note }}</td>
             </tr>
+            <tr>
+                <th>Image</th>
+                <td><img src="{{ vich_uploader_asset(tv_show, 'imageFile') }}"/></td>
+            </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_tv_show_index') }}">back to list</a>
+    <a class="btn btn-primary" href="{{ path('app_tv_show_index') }}">back to list</a>
 
-    <a href="{{ path('app_tv_show_edit', {'id': tv_show.id}) }}">edit</a>
+    <a class="btn btn-secondary" href="{{ path('app_tv_show_edit', {'id': tv_show.id}) }}">edit</a>
 
     {{ include('tv_show/_delete_form.html.twig') }}
 {% endblock %}

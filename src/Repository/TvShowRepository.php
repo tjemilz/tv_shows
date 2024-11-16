@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\TvShow;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Member;
 
 /**
  * @extends ServiceEntityRepository<TvShow>
@@ -23,6 +24,20 @@ class TvShowRepository extends ServiceEntityRepository
         return $this->findBy(
                 []
         );
+    }
+
+    /**
+     * @return [TvShow][] Returns an array of [Objet] objects for a member
+     */
+    public function findMemberTvShow(Member $member): array
+    {
+            return $this->createQueryBuilder('o')
+                    ->leftJoin('o.onlineCatalog', 'i')
+                    ->andWhere('i.owner = :member')
+                    ->setParameter('member', $member)
+                    ->getQuery()
+                    ->getResult()
+            ;
     }
 
 
