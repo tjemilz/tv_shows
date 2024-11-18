@@ -10,6 +10,15 @@ bootstrap_menu:
     account:
       items:
         onlinecatalogs:
+          label: 'My Catalog'
+          route: 'app_online_catalog'
+        logout:
+          label : 'Logout'
+          route: 'app_logout'
+          roles: [ 'ROLE_USER' ]
+    admin:
+      items:
+        onlinecatalogs:
           label: 'Online catalogs'
           route: 'app_online_catalog'
         members:

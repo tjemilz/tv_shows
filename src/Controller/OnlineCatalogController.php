@@ -8,10 +8,13 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 class OnlineCatalogController extends AbstractController
 {
     #[Route('/onlinecatalog', name: 'app_online_catalog')]
+    #[IsGranted('ROLE_USER')]
     public function index(ManagerRegistry $doctrine): Response
     {
         $entityManager= $doctrine->getManager();

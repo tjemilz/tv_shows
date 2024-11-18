@@ -7,10 +7,13 @@ use App\Repository\MemberRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 class MemberController extends AbstractController
 {
     #[Route('/member', name: 'app_member', methods:['GET'])]
+    #[IsGranted('ROLE_ADMIN', message: 'You are not allowed to access the admin dashboard.')]
     public function index(MemberRepository $MemberRepository): Response
     {
         return $this->render('member/index.html.twig', [

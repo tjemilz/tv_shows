@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\TvShow;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 
@@ -23,9 +24,28 @@ final class BestOnesController extends AbstractController
     #[Route(name: 'app_best_ones_index', methods: ['GET'])]
     public function index(BestOnesRepository $bestOnesRepository): Response
     {
-        return $this->render('best_ones/index.html.twig', [
-            'best_ones' => $bestOnesRepository->findBy(['published' => true]),
-        ]);
+        $privateBestOnes = array();
+        $member = $this->getUser();
+        if ($member) {
+            $privateBestOnes = $bestOnesRepository->findBy(
+                [
+                      'published' => false,
+                      'creator' => $member
+                ]);
+            return $this->render('best_ones/index.html.twig', [
+                'best_ones' => $bestOnesRepository->findBy(['published' => true]),
+                'personnal' => $privateBestOnes,
+            ]);
+
+        }
+        else {
+            $private = array();
+            return $this->render('best_ones/index.html.twig', [
+                'best_ones' => $bestOnesRepository->findBy(['published' => true]),
+                'personnal' => $private,
+            ]);
+        }
+        
     }
 
     #[Route('/new/{id}', name: 'app_best_ones_new', methods: ['GET', 'POST'])]
@@ -80,6 +100,7 @@ final class BestOnesController extends AbstractController
 
 
     #[Route('/{id}/edit', name: 'app_best_ones_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function edit(Request $request, BestOnes $bestOne, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(BestOnesType::class, $bestOne);
@@ -112,10 +133,10 @@ final class BestOnesController extends AbstractController
 
 
     #[Route('/{bestones_id}/tvshow/{tvshow_id}', methods: ['GET'], name: 'app_bestones_tvshow_show',requirements: ['bestones_id' => '\d+','tvshow_id' => '\d+'])] 
-       public function TvshowShow(#[MapEntity(id: 'bestones_id')] 
-       BestOnes $bestones,
-       #[MapEntity(id: 'tvshow_id')]
-       TvShow $tvshow): Response
+    public function TvshowShow(#[MapEntity(id: 'bestones_id')] 
+    BestOnes $bestones,
+    #[MapEntity(id: 'tvshow_id')]
+    TvShow $tvshow): Response
     {
         if(! $bestones->getTvshows()->contains($tvshow)) {
                 throw $this->createNotFoundException("Couldn't find such a tvshow in those bestones!");

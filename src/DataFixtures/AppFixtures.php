@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\BestOnes;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\OnlineCatalog;
@@ -60,6 +61,9 @@ class AppFixtures extends Fixture
         {
   
                 $catalog = new OnlineCatalog();
+                $bestone1 = new BestOnes();
+                $bestone1->setDescription("Toute les séries");
+                $bestone1->setPublished(false);
 
 
                 foreach (self::tvshowDataGenerator() as [$title, $year, $director, $note] ) {
@@ -70,10 +74,12 @@ class AppFixtures extends Fixture
                         $tvshow->setNote($note);
                         $manager->persist($tvshow);
                         $catalog->addTvshow($tvshow);
+                        $bestone1->addTvshow($tvshow);
 
+                        
                 }
 
-
+        
 
                 $tvshow = new TvShow();
                 $tvshow->setName("Dark");
@@ -85,6 +91,13 @@ class AppFixtures extends Fixture
                 $catalog2= new OnlineCatalog();
                 $catalog2->addTvshow($tvshow);
 
+
+                $bestone2 = new BestOnes();
+                $bestone2->setDescription("Toute les séries");
+                $bestone2->setPublished(false);
+                $bestone2->addTvshow($tvshow);
+
+                
 
                 // Création des membres (utilisateurs) via un générateur
                 foreach ($this->membersGenerator() as [$email, $plainPassword,$role]) {
@@ -107,6 +120,14 @@ class AppFixtures extends Fixture
                 $MemberRepo = $manager->getRepository(Member::class);
                 $user1 = $MemberRepo->findOneBy(['email' => 'emilien@localhost']);
                 $user2 = $MemberRepo->findOneBy(['email' => 'maxence@localhost']);
+
+                // Ajout d'une galerie = BestOne référencant tous les films déjà vus
+                $bestone1->setCreator($user1);
+                $bestone2->setCreator($user2);
+
+                $manager->persist($bestone2);
+                $manager->persist($bestone1);
+                
 
                 // Attribution des membres aux catalogues
                 $catalog->setMember($user1);

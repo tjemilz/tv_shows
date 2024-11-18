@@ -24,7 +24,9 @@
                 <td>{{ best_one.creator }}</td>
                 <td>
                     <a href="{{ path('app_best_ones_show', {'id': best_one.id}) }}">show</a>
+                    {% if is_granted('ROLE_USER') %}
                     <a href="{{ path('app_best_ones_edit', {'id': best_one.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -35,4 +37,39 @@
         </tbody>
     </table>
 
+    {% if personnal is not empty %}
+    <h1>Personnal Private BestOnes </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Published</th>
+                <th>Creator</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for best_one in personnal %}
+            <tr>
+                <td>{{ best_one.id }}</td>
+                <td>{{ best_one.description }}</td>
+                <td>{{ best_one.published ? 'Yes' : 'No' }}</td>
+                <td>{{ best_one.creator }}</td>
+                <td>
+                    <a href="{{ path('app_best_ones_show', {'id': best_one.id}) }}">show</a>
+                    {% if is_granted('ROLE_USER') %}
+                    <a href="{{ path('app_best_ones_edit', {'id': best_one.id}) }}">edit</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 {% endblock %}
