@@ -8,11 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 use App\Entity\OnlineCatalog;
 use App\Entity\TvShow;
 use App\Entity\Member;
-use App\Repository\OnlineCatalogRepository;
-use App\Repository\TvShowRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 
 
@@ -35,12 +31,22 @@ class AppFixtures extends Fixture
          * Generates initialization data for tv shows : [name, year, director, note]
          * @return \\Generator
          */
-        private static function tvshowDataGenerator()
+        private static function tvshowDataGenerator1()
         {
                 yield ["Game of Thrones", 2011, "David Benioff", 20];
                 yield ["Peaky Blinders", 2013, "Steven Knight", 18];
                 yield ["Vikings", 2013, "Helen Shaver", 17];
                 yield ["Breaking Bad", 2008, "Brian Cranston, Vince Gilligan", 15];
+                
+        }
+
+
+        private static function tvshowDataGenerator2()
+        {
+                yield ["Dark", 2017, "Baran bo Odar, Jantje Friese", 16];
+                yield ["Ozark", 2017, "Bill Dubuque", 18];
+                yield ["The Office", 2005, "Mindy Kaling", 16];
+                
                 
         }
 
@@ -63,10 +69,10 @@ class AppFixtures extends Fixture
                 $catalog = new OnlineCatalog();
                 $bestone1 = new BestOnes();
                 $bestone1->setDescription("Toute les séries");
-                $bestone1->setPublished(false);
+                $bestone1->setPublished(true);
 
 
-                foreach (self::tvshowDataGenerator() as [$title, $year, $director, $note] ) {
+                foreach (self::tvshowDataGenerator1() as [$title, $year, $director, $note] ) {
                         $tvshow = new TvShow();
                         $tvshow->setName($title);
                         $tvshow->setYear($year);
@@ -75,27 +81,39 @@ class AppFixtures extends Fixture
                         $manager->persist($tvshow);
                         $catalog->addTvshow($tvshow);
                         $bestone1->addTvshow($tvshow);
-
-                        
+  
                 }
 
         
 
-                $tvshow = new TvShow();
-                $tvshow->setName("Dark");
-                $tvshow->setYear(2017);
-                $tvshow->setDirector("Baran bo Odar, Jantje Friese");
-                $tvshow->setNote(16);
-                $manager->persist($tvshow);
+                
 
                 $catalog2= new OnlineCatalog();
-                $catalog2->addTvshow($tvshow);
 
 
                 $bestone2 = new BestOnes();
                 $bestone2->setDescription("Toute les séries");
                 $bestone2->setPublished(false);
-                $bestone2->addTvshow($tvshow);
+
+
+                $bestone3 = new BestOnes();
+                $bestone3->setDescription("Humouristic");
+                $bestone3->setPublished(true);
+
+                foreach (self::tvshowDataGenerator2() as [$title, $year, $director, $note] ) {
+                        $tvshow = new TvShow();
+                        $tvshow->setName($title);
+                        $tvshow->setYear($year);
+                        $tvshow->setDirector($director);
+                        $tvshow->setNote($note);
+                        $manager->persist($tvshow);
+                        $catalog2->addTvshow($tvshow);
+                        $bestone2->addTvshow($tvshow);
+  
+                }
+
+                
+                
 
                 
 
@@ -116,6 +134,14 @@ class AppFixtures extends Fixture
                 $manager->persist($catalog2);
                 $manager->flush(); // Sauvegarde initiale
 
+
+                //Ajout d'une galerie publique humour pour 1 des utilisateurs
+                $FilmRepo = $manager->getRepository(TvShow::class);
+                $tvshow1 = $FilmRepo->findOneBy(['name' => "The Office"]);
+                $bestone3->addTvshow($tvshow1);
+
+
+
                 // Récupération des membres enregistrés par leur e-mail
                 $MemberRepo = $manager->getRepository(Member::class);
                 $user1 = $MemberRepo->findOneBy(['email' => 'emilien@localhost']);
@@ -124,9 +150,11 @@ class AppFixtures extends Fixture
                 // Ajout d'une galerie = BestOne référencant tous les films déjà vus
                 $bestone1->setCreator($user1);
                 $bestone2->setCreator($user2);
+                $bestone3->setCreator($user2);
 
-                $manager->persist($bestone2);
                 $manager->persist($bestone1);
+                $manager->persist($bestone2);
+                $manager->persist($bestone3);
                 
 
                 // Attribution des membres aux catalogues

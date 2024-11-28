@@ -24,7 +24,7 @@
                 <td>{{ best_one.creator }}</td>
                 <td>
                     <a href="{{ path('app_best_ones_show', {'id': best_one.id}) }}">show</a>
-                    {% if is_granted('ROLE_USER') %}
+                    {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('app_best_ones_edit', {'id': best_one.id}) }}">edit</a>
                     {% endif %}
                 </td>
@@ -52,6 +52,24 @@
         </thead>
         <tbody>
         {% for best_one in personnal %}
+            <tr>
+                <td>{{ best_one.id }}</td>
+                <td>{{ best_one.description }}</td>
+                <td>{{ best_one.published ? 'Yes' : 'No' }}</td>
+                <td>{{ best_one.creator }}</td>
+                <td>
+                    <a href="{{ path('app_best_ones_show', {'id': best_one.id}) }}">show</a>
+                    {% if is_granted('ROLE_USER') %}
+                    <a href="{{ path('app_best_ones_edit', {'id': best_one.id}) }}">edit</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        {% for best_one in public_personnal %}
             <tr>
                 <td>{{ best_one.id }}</td>
                 <td>{{ best_one.description }}</td>

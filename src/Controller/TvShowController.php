@@ -11,21 +11,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/tvshow')]
 final class TvShowController extends AbstractController
 {
     #[Route(name: 'app_tv_show_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(TvShowRepository $tvShowRepository): Response
     {
-        if ($this->isGranted('ROLE_ADMIN')) {
-            $tvshows = $tvShowRepository->findAll();
-        }
-        else {
-            $member = $this->getUser();
-            dump($this);
-            $tvshows = $tvShowRepository->findMemberTvShow($member);
-        }
         return $this->render('tv_show/index.html.twig', [
             'tv_shows' => $tvShowRepository->findAll(),
         ]);

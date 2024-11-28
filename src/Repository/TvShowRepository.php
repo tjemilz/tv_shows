@@ -33,7 +33,7 @@ class TvShowRepository extends ServiceEntityRepository
     {
             return $this->createQueryBuilder('o')
                     ->leftJoin('o.onlineCatalog', 'i')
-                    ->andWhere('i.owner = :member')
+                    ->andWhere('i.member = :member')
                     ->setParameter('member', $member)
                     ->getQuery()
                     ->getResult()

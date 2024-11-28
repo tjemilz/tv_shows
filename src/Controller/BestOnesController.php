@@ -32,9 +32,15 @@ final class BestOnesController extends AbstractController
                       'published' => false,
                       'creator' => $member
                 ]);
+            $publicBestOnes = $bestOnesRepository->findBy(
+                [
+                      'published' => true,
+                      'creator' => $member
+                ]);
             return $this->render('best_ones/index.html.twig', [
                 'best_ones' => $bestOnesRepository->findBy(['published' => true]),
                 'personnal' => $privateBestOnes,
+                'public_personnal' => $publicBestOnes,
             ]);
 
         }

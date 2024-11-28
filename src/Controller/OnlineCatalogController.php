@@ -14,13 +14,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class OnlineCatalogController extends AbstractController
 {
     #[Route('/onlinecatalog', name: 'app_online_catalog')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(ManagerRegistry $doctrine): Response
     {
         $entityManager= $doctrine->getManager();
         $online_catalogs = $entityManager->getRepository(OnlineCatalog::class)->findAll();
-
-
+        
         return $this->render('online_catalog/index.html.twig',
                 [ 'online_catalogs' => $online_catalogs ]
             );

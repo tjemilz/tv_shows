@@ -2,6 +2,9 @@ bootstrap_menu:
   menus:
     main:
       items:
+        bestones:
+          label: 'Best Ones'
+          route: 'app_best_ones_index'
     anonymousaccount:
       items:
         login:
@@ -9,9 +12,6 @@ bootstrap_menu:
           route: 'app_login'
     account:
       items:
-        onlinecatalogs:
-          label: 'My Catalog'
-          route: 'app_online_catalog'
         logout:
           label : 'Logout'
           route: 'app_logout'
@@ -24,6 +24,9 @@ bootstrap_menu:
         members:
           label: 'Members'
           route: 'app_member'
+        tvshows:
+          label: 'Tv Shows'
+          route: 'app_tv_show_index'
         logout:
           label : 'Logout'
           route: 'app_logout'
